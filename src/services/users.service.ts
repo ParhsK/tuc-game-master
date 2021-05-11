@@ -29,7 +29,11 @@ class UserService {
     if (findUser) throw new HttpException(409, `Email ${userData.email} already exists`);
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
-    const createUserData: User = await this.users.create({ ...userData, password: hashedPassword, role: Role.PLAYER });
+    const createUserData: User = await this.users.create({
+      ...userData,
+      password: hashedPassword,
+      role: Role.PLAYER,
+    });
     return createUserData;
   }
 
@@ -38,7 +42,8 @@ class UserService {
 
     if (userData.email) {
       const findUser: User = await this.users.findOne({ email: userData.email });
-      if (findUser && findUser._id != userId) throw new HttpException(409, `You're email ${userData.email} already exists`);
+      if (findUser && findUser._id != userId)
+        throw new HttpException(409, `You're email ${userData.email} already exists`);
     }
 
     if (userData.password) {

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import GameController from '@controllers/game.controller';
 import Route from '@interfaces/routes.interface';
-import validationMiddleware from '@middlewares/validation.middleware';
-import { CreateUserDto } from '@dtos/users.dto';
 import authMiddleware from '@/middlewares/auth.middleware';
+import { Role } from '@/interfaces/users.interface';
+import roleMiddleware from '@/middlewares/role.middleware';
 
 class GameRoute implements Route {
   public path = '/game';
@@ -15,7 +15,20 @@ class GameRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), authMiddleware, this.gameController.findPracticeMatch);
+    this.router.get(`${this.path}`, authMiddleware, this.gameController.getTournaments);
+    this.router.get(`${this.path}/id`, authMiddleware, this.gameController.getTournamentById);
+    this.router.post(
+      `${this.path}`,
+      authMiddleware,
+      roleMiddleware([Role.OFFICIAL]),
+      this.gameController.createTournament,
+    );
+    this.router.post(`${this.path}/join`, authMiddleware, this.gameController.joinTournament);
+    this.router.post(
+      `${this.path}/findPractice`,
+      authMiddleware,
+      this.gameController.findPracticeMatch,
+    );
   }
 }
 

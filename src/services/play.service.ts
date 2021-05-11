@@ -11,9 +11,17 @@ class PlayService {
   public async findOrCreatePracticePlay(playData: CreatePlayDto, user: User): Promise<Play> {
     if (isEmpty(playData)) throw new HttpException(406, 'Selected game not found.');
 
-    const existingPlay = await this.plays.findOne({ gameName: playData.game, player2: null, status: PlayStatus.PENDING, tournamentID: null });
+    const existingPlay = await this.plays.findOne({
+      gameName: playData.game,
+      player2: null,
+      status: PlayStatus.PENDING,
+      tournamentID: null,
+    });
     if (existingPlay) {
-      await this.plays.findByIdAndUpdate(existingPlay._id, { player2: user._id, status: PlayStatus.ONGOING });
+      await this.plays.findByIdAndUpdate(existingPlay._id, {
+        player2: user._id,
+        status: PlayStatus.ONGOING,
+      });
       return existingPlay;
     }
 
