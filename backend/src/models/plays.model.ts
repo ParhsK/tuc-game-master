@@ -31,6 +31,10 @@ const playSchema: Schema = new Schema({
     ref: 'Tournament',
     default: null,
   },
+  lastPlayed: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 const playModel = model<Play & Document>('Play', playSchema);

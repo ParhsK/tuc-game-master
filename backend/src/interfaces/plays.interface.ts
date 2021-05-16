@@ -5,13 +5,13 @@ export interface Play {
   state: string;
   gameName: GameName;
   tournamentID: string;
+  lastPlayed?: string;
 }
 
 export enum PlayStatus {
   ONGOING = 'ONGOING',
   DRAW = 'DRAW',
-  PLAYER1WIN = 'PLAYER1WIN',
-  PLAYER2WIN = 'PLAYER2WIN',
+  WIN = 'WIN',
   CANCELLED = 'CANCELLED',
   PENDING = 'PENDING',
 }

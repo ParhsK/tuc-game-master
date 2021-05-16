@@ -7,7 +7,3 @@ export class CreateTournamentDto {
 export class JoinTournamentDto {
   public id: string;
 }
-
-export class FindTournamentDto {
-  public id: string;
-}

@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from 'express';
 import { Play } from '@interfaces/plays.interface';
 import { CreatePlayDto } from '@dtos/play.dto';
-import { CreateTournamentDto, FindTournamentDto, JoinTournamentDto } from '@dtos/tournament.dto';
+import { CreateTournamentDto, JoinTournamentDto } from '@dtos/tournament.dto';
 import PlayService from '@services/play.service';
 import { Tournament } from '@interfaces/tournaments.interface';
 import TournamentService from '@services/tournament.service';
@@ -27,7 +27,6 @@ class GameController {
 
   public createTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      console.log('#############', req.user);
       const tournamentData: CreateTournamentDto = req.body;
       const createTournamentData: Tournament = await this.tournamentService.createTournament(
         tournamentData,
@@ -66,9 +65,9 @@ class GameController {
 
   public getTournamentById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const tournamentData: FindTournamentDto = req.body;
+      const tournamentId: string = req.params.id;
       const findTournament: Tournament = await this.tournamentService.findTournamentById(
-        tournamentData.id,
+        tournamentId,
       );
 
       res.status(200).json({ data: findTournament, message: 'find One' });

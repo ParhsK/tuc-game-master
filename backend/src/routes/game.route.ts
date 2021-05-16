@@ -16,7 +16,7 @@ class GameRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, authMiddleware, this.gameController.getTournaments);
-    this.router.get(`${this.path}/id`, authMiddleware, this.gameController.getTournamentById);
+    this.router.get(`${this.path}/:id`, authMiddleware, this.gameController.getTournamentById);
     this.router.post(
       `${this.path}`,
       authMiddleware,
