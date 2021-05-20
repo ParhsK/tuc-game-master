@@ -1,0 +1,21 @@
+.game-container {
+  display: flex;
+  align-items: center;
+}
+
+.game-card {
+  margin: 50px;
+  max-width: 400px;
+}
+
+.game-header-image {
+  background-size: cover;
+}
+
+.chess-header-image {
+  background-image: url('https://avatarfiles.alphacoders.com/243/thumb-243942.png');
+}
+
+.ttt-header-image {
+  background-image: url('https://miro.medium.com/max/512/1*Syzc_BbO0QHTx74NLHcpiQ.png');
+}

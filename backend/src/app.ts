@@ -56,7 +56,7 @@ class App {
       this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
     } else {
       this.app.use(morgan('dev', { stream }));
-      this.app.use(cors({ origin: true, credentials: true }));
+      this.app.use(cors({ origin: 'http://127.0.0.1:4200', credentials: true }));
     }
 
     this.app.use(hpp());

@@ -4,19 +4,62 @@ import HttpException from '@exceptions/HttpException';
 import { Role, User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import playModel from '@/models/plays.model';
+import { PlayStatus, Play } from '@/interfaces/plays.interface';
 
 class UserService {
   public users = userModel;
+  public plays = playModel;
 
-  public async findAllUser(): Promise<User[]> {
-    const users: User[] = await this.users.find();
-    return users;
+  public async findAllUsers(): Promise<User[]> {
+    const users = await this.users.find().select('-password');
+    const wins = await this.plays.aggregate([
+      { $match: { status: PlayStatus.WIN } },
+      {
+        $group: {
+          _id: '$lastPlayed',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const draws = await this.plays.aggregate([
+      { $match: { status: PlayStatus.DRAW } },
+      { $project: { players: ['$player1', '$player2'] } },
+      { $unwind: '$players' },
+      {
+        $group: {
+          _id: '$players',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    const retUsers: User[] = [];
+    for (const user of users) {
+      const newUser = {
+        _id: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+        score:
+          (wins.find(win => win._id.toString() === user._id.toString())?.count ?? 0) * 3 +
+          (draws.find(draw => draw._id.toString() === user._id.toString())?.count ?? 0),
+      };
+      retUsers.push(newUser);
+    }
+    return retUsers;
   }
 
   public async findUserById(userId: string): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, "You're not userId");
 
-    const findUser: User = await this.users.findOne({ _id: userId });
+    const findUser: User = await this.users.findOne({ _id: userId }).select('-password');
+    const userPlays: Play[] = await this.plays.find({
+      $and: [
+        { $or: [{ player1: userId }, { player2: userId }] },
+        { $or: [{ status: PlayStatus.WIN }, { status: PlayStatus.DRAW }] },
+        { tournamentID: null },
+      ],
+    });
     if (!findUser) throw new HttpException(409, "You're not user");
 
     return findUser;
@@ -51,7 +94,9 @@ class UserService {
       userData = { ...userData, password: hashedPassword };
     }
 
-    const updateUserById: User = await this.users.findByIdAndUpdate(userId, { userData });
+    const updateUserById: User = await this.users
+      .findByIdAndUpdate(userId, { userData })
+      .select('-password');
     if (!updateUserById) throw new HttpException(409, "You're not user");
 
     return updateUserById;

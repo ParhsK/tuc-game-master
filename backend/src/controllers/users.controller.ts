@@ -2,13 +2,24 @@ import { NextFunction, Request, Response } from 'express';
 import { CreateUserDto } from '@dtos/users.dto';
 import { User } from '@interfaces/users.interface';
 import userService from '@services/users.service';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class UsersController {
   public userService = new userService();
 
+  public getSelf = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const findSelf: User = await this.userService.findUserById(req.user._id);
+
+      res.status(200).json({ data: findSelf, message: 'self' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const findAllUsersData: User[] = await this.userService.findAllUser();
+      const findAllUsersData: User[] = await this.userService.findAllUsers();
 
       res.status(200).json({ data: findAllUsersData, message: 'findAll' });
     } catch (error) {

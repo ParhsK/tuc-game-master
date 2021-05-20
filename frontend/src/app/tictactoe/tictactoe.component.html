@@ -1,0 +1,10 @@
+<section>
+  <h1 class="game-title">Tic Tac Toe</h1>
+  <h2 class="game-title">{{ message }}</h2>
+  <div class="game-container">
+      <div *ngFor="let cell of gameStateArray; index as i" (click)="onCellClick(i)" class="cell">{{cell}}</div>
+  </div>
+  <h2 class="game-status"></h2>
+  <button mat-raised-button (click)="updateGameStatus()">Refresh</button>
+  <button mat-raised-button *ngIf="currentGame?.status !== 'PENDING' && currentGame?.status !== 'ONGOING'" (click)="playService.findPracticePlay('TIC_TAC_TOE')">Play more</button>
+</section>

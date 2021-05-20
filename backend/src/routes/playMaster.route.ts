@@ -13,6 +13,7 @@ class PlayRoute implements Route {
   }
 
   private initializeRoutes() {
+    this.router.get(`${this.path}`, authMiddleware, this.playController.getActivePlay);
     this.router.get(`${this.path}/:id`, authMiddleware, this.playController.getPlayState);
     this.router.post(`${this.path}/:id`, authMiddleware, this.playController.makePlayMove);
   }

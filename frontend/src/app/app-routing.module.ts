@@ -1,12 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { LoginComponent } from './login/login.component';
+import { PlayComponent } from './play/play.component';
+import { RegisterComponent } from './register/register.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { UserInfoComponent } from './user-info/user-info.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuardService] },
+  { path: 'user/:id', component: UserInfoComponent, canActivate: [AuthGuardService] },
+  { path: 'play', component: PlayComponent, canActivate: [AuthGuardService] },
+  { path: 'games', component: GameSelectorComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

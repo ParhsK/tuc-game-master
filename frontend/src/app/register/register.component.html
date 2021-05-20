@@ -1,1 +1,23 @@
-<p>register works!</p>
+<mat-card>
+  <mat-card-title>TucGameMaster</mat-card-title>
+  <mat-card-content>
+    <div class="login-form">
+      <mat-form-field class="">
+        <mat-label>Email:</mat-label>
+        <input matInput placeholder="Enter your email" [(ngModel)]="credentials.email" name="email">
+      </mat-form-field>
+      
+      <mat-form-field class="">
+        <mat-label>Username:</mat-label>
+        <input matInput placeholder="Enter your username" [(ngModel)]="credentials.username" name="username">
+      </mat-form-field>
+    
+      <mat-form-field class="">
+        <mat-label>Password:</mat-label>
+        <input matInput placeholder="Enter your password" type="password" [(ngModel)]="credentials.password" name="password">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="onRegisterClick()">Login</button>
+    </div>
+  </mat-card-content>
+</mat-card>

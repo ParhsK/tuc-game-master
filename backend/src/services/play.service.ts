@@ -20,15 +20,17 @@ class PlayService {
       tournamentID: null,
     });
     if (existingPlay) {
-      if (existingPlay.player1.toString() === user._id) {
-        throw new HttpException(406, 'Already in queue');
+      if (existingPlay.player1.toString() === user._id.toString()) {
+        return existingPlay;
       }
       const secondPlayer = Math.floor(Math.random() * 2) === 0 ? existingPlay.player1 : user._id;
-      const newPlay = await this.plays.findByIdAndUpdate(existingPlay._id, {
-        player2: user._id,
-        lastPlayed: secondPlayer,
-        status: PlayStatus.ONGOING,
-      });
+      const newPlay = await this.plays
+        .findByIdAndUpdate(existingPlay._id, {
+          player2: user._id,
+          lastPlayed: secondPlayer,
+          status: PlayStatus.ONGOING,
+        })
+        .setOptions({ returnOriginal: false });
       return newPlay;
     }
 
@@ -53,6 +55,16 @@ class PlayService {
     const existingPlay = await this.plays.findOne({
       $or: [{ player1: user._id }, { player2: user._id }],
       _id: playId,
+    });
+    return existingPlay;
+  }
+
+  public async findActivePlay(user: User): Promise<Play> {
+    const existingPlay = await this.plays.findOne({
+      $and: [
+        { $or: [{ player1: user._id }, { player2: user._id }] },
+        { $or: [{ status: PlayStatus.PENDING }, { status: PlayStatus.ONGOING }] },
+      ],
     });
     return existingPlay;
   }

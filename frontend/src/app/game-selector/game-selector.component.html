@@ -1,0 +1,37 @@
+<div class="game-container">
+  <mat-card class="game-card">
+    <mat-card-header>
+      <div mat-card-avatar class="game-header-image chess-header-image"></div>
+      <mat-card-title>Chess</mat-card-title>
+      <mat-card-subtitle>Play some chess</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://i2.wp.com/www.smartprix.com/bytes/wp-content/uploads/2018/04/chess-featured-smartprix.jpg">
+    <mat-card-content>
+      <p>
+        Maybe some text here
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>PRACTICE</button>
+      <button mat-button>TOURNAMENT</button>
+    </mat-card-actions>
+  </mat-card>
+  
+  <mat-card class="game-card">
+    <mat-card-header>
+      <div mat-card-avatar class="game-header-image ttt-header-image"></div>
+      <mat-card-title>Tic-Tac-Toe</mat-card-title>
+      <mat-card-subtitle>Play some ttt</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/1200px-Tic_tac_toe.svg.png">
+    <mat-card-content>
+      <p>
+        Maybe some text here
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="onPracticeClick('TIC_TAC_TOE')">PRACTICE</button>
+      <button mat-button>TOURNAMENT</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

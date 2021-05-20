@@ -1,9 +1,10 @@
 export interface User {
   _id: string;
   email: string;
-  password: string;
+  password?: string;
   username: string;
   role: Role;
+  score?: number;
 }
 
 export enum Role {

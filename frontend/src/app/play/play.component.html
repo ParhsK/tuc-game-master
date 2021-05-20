@@ -1,0 +1,2 @@
+<app-tictactoe *ngIf="(playService.$currentGame | async)?.gameName === 'TIC_TAC_TOE'"></app-tictactoe>
+<app-chess *ngIf="(playService.$currentGame | async)?.gameName === 'CHESS'"></app-chess>

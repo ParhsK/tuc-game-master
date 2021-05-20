@@ -7,6 +7,16 @@ import { NextFunction, Response } from 'express';
 class PlayController {
   public playService = new PlayService();
 
+  public getActivePlay = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const getPlayData: Play = await this.playService.findActivePlay(req.user);
+
+      res.status(200).json({ data: getPlayData, message: 'active play' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getPlayState = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const playId: string = req.params.id;
