@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, UpdateUserDto } from '@dtos/users.dto';
 import HttpException from '@exceptions/HttpException';
 import { Role, User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
@@ -52,15 +52,30 @@ class UserService {
   public async findUserById(userId: string): Promise<User> {
     if (isEmpty(userId)) throw new HttpException(400, "You're not userId");
 
-    const findUser: User = await this.users.findOne({ _id: userId }).select('-password');
-    const userPlays: Play[] = await this.plays.find({
-      $and: [
-        { $or: [{ player1: userId }, { player2: userId }] },
-        { $or: [{ status: PlayStatus.WIN }, { status: PlayStatus.DRAW }] },
-        { tournamentID: null },
-      ],
-    });
+    const findUser: User = await this.users.findOne({ _id: userId }).select('-password').lean();
     if (!findUser) throw new HttpException(409, "You're not user");
+
+    const userPlays: Play[] = await this.plays
+      .find({
+        $and: [
+          { $or: [{ player1: userId }, { player2: userId }] },
+          { $or: [{ status: PlayStatus.WIN }, { status: PlayStatus.DRAW }] },
+          { tournamentID: null },
+        ],
+      })
+      .lean();
+    findUser.score = userPlays.reduce((score, play) => {
+      if (
+        play.status === PlayStatus.WIN &&
+        play.lastPlayed.toString() === findUser._id.toString()
+      ) {
+        return score + 3;
+      } else if (play.status === PlayStatus.DRAW) {
+        return score + 1;
+      } else {
+        return score;
+      }
+    }, 0);
 
     return findUser;
   }
@@ -80,24 +95,15 @@ class UserService {
     return createUserData;
   }
 
-  public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {
+  public async updateUser(userId: string, userData: UpdateUserDto): Promise<User> {
     if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
 
-    if (userData.email) {
-      const findUser: User = await this.users.findOne({ email: userData.email });
-      if (findUser && findUser._id != userId)
-        throw new HttpException(409, `You're email ${userData.email} already exists`);
-    }
-
-    if (userData.password) {
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
-      userData = { ...userData, password: hashedPassword };
-    }
-
     const updateUserById: User = await this.users
-      .findByIdAndUpdate(userId, { userData })
-      .select('-password');
-    if (!updateUserById) throw new HttpException(409, "You're not user");
+      .findByIdAndUpdate(userId, {
+        role: userData.role,
+      })
+      .setOptions({ returnOriginal: false });
+    if (!updateUserById) throw new HttpException(409, 'User not found');
 
     return updateUserById;
   }

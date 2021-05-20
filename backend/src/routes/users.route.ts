@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UsersController from '@controllers/users.controller';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, UpdateUserDto } from '@dtos/users.dto';
 import Route from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { Role } from '@/interfaces/users.interface';
@@ -31,7 +31,7 @@ class UsersRoute implements Route {
       `${this.path}/:id`,
       authMiddleware,
       roleMiddleware([Role.ADMIN]),
-      validationMiddleware(CreateUserDto, 'body', true),
+      validationMiddleware(UpdateUserDto, 'body', true),
       this.usersController.updateUser,
     );
     this.router.delete(

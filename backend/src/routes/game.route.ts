@@ -16,7 +16,6 @@ class GameRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, authMiddleware, this.gameController.getTournaments);
-    this.router.get(`${this.path}/:id`, authMiddleware, this.gameController.getTournamentById);
     this.router.post(
       `${this.path}`,
       authMiddleware,
@@ -28,6 +27,16 @@ class GameRoute implements Route {
       `${this.path}/findPractice`,
       authMiddleware,
       this.gameController.findPracticeMatch,
+    );
+    this.router.get(
+      `${this.path}/findAllPractices`,
+      authMiddleware,
+      this.gameController.getPracticeHistory,
+    );
+    this.router.get(
+      `${this.path}/tournaments/:id`,
+      authMiddleware,
+      this.gameController.getTournamentById,
     );
   }
 }

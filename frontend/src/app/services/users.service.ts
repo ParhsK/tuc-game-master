@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UsersService {
 
   apiURL = environment.apiURL;
@@ -25,6 +26,16 @@ export class UsersService {
       const res = await this.http.get<{data: any, message: string}>(`${this.apiURL}/users/${userId}`, { withCredentials: true }).toPromise();
       console.log("Fetched user successfully with:", res);
       return res;
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  async changeRole(userId: string, newRole: string) {
+    try {
+      const res = await this.http.put<{data: any, message: string}>(`${this.apiURL}/users/${userId}`, {role: newRole}, {withCredentials: true}).toPromise();
+      console.log("Updated user successfully with:", res);
+      return res.data;
     } catch (ex) {
       console.error(ex);
     }

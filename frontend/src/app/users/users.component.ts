@@ -14,7 +14,7 @@ export interface PeriodicElement {
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent {
-  displayedColumns: string[] = ['email', 'username', 'role', 'score'];
+  displayedColumns: string[] = ['username', 'email', 'role', 'score'];
   dataSource = [];
 
   constructor(private _usersService: UsersService) {

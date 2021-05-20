@@ -25,6 +25,16 @@ class GameController {
     }
   };
 
+  public getPracticeHistory = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const historyData: Play[] = await this.playService.findAllPracticeMatches(req.user);
+
+      res.status(201).json({ data: historyData, message: 'practice history' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public createTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const tournamentData: CreateTournamentDto = req.body;

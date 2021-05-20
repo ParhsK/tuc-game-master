@@ -49,6 +49,22 @@ class PlayService {
     return createdPlay;
   }
 
+  public async findAllPracticeMatches(user: User): Promise<Play[]> {
+    if (isEmpty(user)) throw new HttpException(406, 'Selected user not found.');
+
+    const practicePlays = await this.plays
+      .find({
+        $and: [
+          { $or: [{ status: PlayStatus.DRAW }, { status: PlayStatus.WIN }] },
+          { $or: [{ player1: user._id.toString() }, { player2: user._id.toString() }] },
+          { tournamentID: null },
+        ],
+      })
+      .populate('player1', 'username')
+      .populate('player2', 'username');
+    return practicePlays;
+  }
+
   public async findPlay(playId: string, user: User): Promise<Play> {
     if (isEmpty(playId)) throw new HttpException(406, 'PlayId is required');
 

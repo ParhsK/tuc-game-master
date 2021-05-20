@@ -19,9 +19,7 @@ export class PlayService {
     try {
       const res = await this.http.get<{ data: any, message: string }>(
         `${this.apiURL}/play`,
-        {
-          withCredentials: true
-        }
+        { withCredentials: true }
       ).toPromise();
       console.log("Get current game:", res);
       this.currentGame.next(res.data)
@@ -37,9 +35,7 @@ export class PlayService {
       const res = await this.http.post<{ data: any, message: string }>(
         `${this.apiURL}/game/findPractice`,
         playData,
-        {
-          withCredentials: true
-        }
+        { withCredentials: true }
       ).toPromise();
       console.log("Find practice game:", res);
       this.currentGame.next(res.data)
@@ -56,9 +52,7 @@ export class PlayService {
     try {
       const res = await this.http.get<{ data: any, message: string }>(
         `${this.apiURL}/play/${this.currentGame.value._id}`,
-        {
-          withCredentials: true
-        }
+        { withCredentials: true }
       ).toPromise();
       console.log("Get play status:", res);
       this.currentGame.next(res.data)
@@ -77,12 +71,22 @@ export class PlayService {
       const res = await this.http.post<{ data: any, message: string }>(
         `${this.apiURL}/play/${this.currentGame.value._id}`,
         playerMove,
-        {
-          withCredentials: true
-        }
+        { withCredentials: true }
       ).toPromise();
       console.log("Made move:", res);
       this.currentGame.next(res.data)
+      return res;
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  async getHistory() {
+    try {
+      const res = await this.http.get<{ data: any, message: string }>(
+        `${this.apiURL}/game/findAllPractices`,
+        { withCredentials: true }
+      ).toPromise();
       return res;
     } catch (ex) {
       console.error(ex);

@@ -1,1 +1,40 @@
-<p>user-info works!</p>
+<div class="info-container">
+  <span>username: {{user.username}}</span>
+  <span>email: {{user.email}}</span>
+  <span>role: {{user.role}}</span>
+  <span>score: {{user.score}}</span>
+</div>
+<div class="info-container" *ngIf="isAdmin">
+  <button mat-raised-button color="primary" (click)="assignNewRole('PLAYER')">Make Player</button>
+  <button mat-raised-button color="primary" (click)="assignNewRole('OFFICIAL')">Make Official</button>
+  <button mat-raised-button color="primary" (click)="assignNewRole('ADMIN')">Make Admin</button>
+</div>
+<table *ngIf="isMe" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Game Column -->
+  <ng-container matColumnDef="gameName" >
+    <th mat-header-cell *matHeaderCellDef> Game </th>
+    <td mat-cell *matCellDef="let play"> {{play.gameName}} </td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="result">
+    <th mat-header-cell *matHeaderCellDef> Result </th>
+    <td mat-cell *matCellDef="let play"> {{play.result}} </td>
+  </ng-container>
+
+  <!-- Player1 Column -->
+  <ng-container matColumnDef="player1">
+    <th mat-header-cell *matHeaderCellDef> Player1 </th>
+    <td mat-cell *matCellDef="let play"> {{play.player1.username}} </td>
+  </ng-container>
+  
+  <!-- Player2 Column -->
+  <ng-container matColumnDef="player2">
+    <th mat-header-cell *matHeaderCellDef> Player2 </th>
+    <td mat-cell *matCellDef="let play"> {{play.player2.username}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
