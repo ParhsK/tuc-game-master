@@ -57,8 +57,8 @@ export class TournamentInfoComponent implements OnInit {
     this.isOfficial = res.data.role === "OFFICIAL";
   }
 
-  async startTournament(): Promise<void> {
-    const res = await this._tournamentService.startTournament(this.id);
+  async advanceTournament(): Promise<void> {
+    const res = await this._tournamentService.advanceTournament(this.id);
     this.tournament.gameName = res.data.gameName;
   }
 }

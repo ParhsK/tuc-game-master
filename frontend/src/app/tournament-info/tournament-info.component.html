@@ -11,7 +11,10 @@
 
 <div class="buttons">
   <button mat-raised-button color="primary" (click)="joinTournament()"  *ngIf="isOpen">Join tournament</button>
-  <button mat-raised-button color="primary" (click)="startTournament()" *ngIf="isOfficial && isOpen">Start tournament</button>
+  <button mat-raised-button color="primary" (click)="advanceTournament()" *ngIf="isOfficial && isOpen">
+    <span *ngIf="tournament.status === 'OPEN'">Start tournament</span>
+    <span *ngIf="tournament.status === 'ONGOING'">Advance tournament</span>
+  </button>
 </div>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 

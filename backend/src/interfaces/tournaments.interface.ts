@@ -1,6 +1,7 @@
 import { GameName, Play } from './plays.interface';
 
 export interface Tournament {
+  _id?: string;
   firstPlace?: string;
   secondPlace?: string;
   thirdPlace?: string;
@@ -9,6 +10,7 @@ export interface Tournament {
   participants: string[];
   gameName: GameName;
   status: TournamentStatus;
+  round: number;
   plays?: Play[];
 }
 

@@ -97,33 +97,52 @@ class PlayService {
     if (existingPlay.lastPlayed.toString() === user._id.toString()) {
       throw new HttpException(406, 'Not your turn');
     }
+
+    let gameIsOver = PlayStatus.ONGOING;
+
+    // Validate TicTacToe move
     if (existingPlay.gameName === GameName.TIC_TAC_TOE) {
       const moveIsValid = this.ticTacToeManager.validateMove(playerMove, existingPlay.state);
       if (!moveIsValid) throw new HttpException(406, 'Invalid move');
 
-      const gameIsOver = this.ticTacToeManager.checkGameOver(playerMove.gameState);
-      return this.plays
-        .findByIdAndUpdate(playId, {
-          state: playerMove.gameState,
-          status: gameIsOver,
-          lastPlayed: user._id,
-        })
-        .setOptions({ returnOriginal: false });
+      gameIsOver = this.ticTacToeManager.checkGameOver(playerMove.gameState);
+
+      // TODO: CHESS
+      // } else if (existingPlay.gameName === GameName.CHESS) {
+      //   const moveIsValid = chessManager.validateMove(playerMove, existingPlay.state);
+      //   if (!moveIsValid) throw new HttpException(406, 'Invalid move');
+
+      //   const nextGameState = chessManager.getGameState(playerMove, existingPlay.state);
+      //   const gameIsOver = chessManager.checkGameOver(nextGameState);
+      //
+    } else {
+      throw new HttpException(500, 'Game not found');
     }
 
-    // if (existingPlay.gameName === GameName.CHESS) {
-    //   const moveIsValid = chessManager.validateMove(playerMove, existingPlay.state);
-    //   if (!moveIsValid) throw new HttpException(406, 'Invalid move');
+    // If a tournament play ends with draw, immediately create a new one to replace it
+    if (gameIsOver === PlayStatus.DRAW && existingPlay.tournamentID) {
+      let newState = JSON.stringify({});
+      if (existingPlay.gameName === GameName.TIC_TAC_TOE) {
+        newState = this.ticTacToeManager.initializeState();
+      }
+      await this.plays.create({
+        player1: existingPlay.player1,
+        player2: existingPlay.player2,
+        status: PlayStatus.ONGOING,
+        state: newState,
+        gameName: existingPlay.gameName,
+        tournamentID: existingPlay.tournamentID,
+      });
+    }
 
-    //   const nextGameState = chessManager.getGameState(playerMove, existingPlay.state);
-    //   const gameIsOver = chessManager.checkGameOver(nextGameState);
-    //   return this.plays.findByIdAndUpdate(playId, {
-    //     state: nextGameState,
-    //     status: gameIsOver,
-    //     lastPlayed: user._id,
-    //   });
-    // }
-    throw new HttpException(500, 'Game not found');
+    // Return the updated play
+    return this.plays
+      .findByIdAndUpdate(playId, {
+        state: playerMove.gameState,
+        status: gameIsOver,
+        lastPlayed: user._id,
+      })
+      .setOptions({ returnOriginal: false });
   }
 }
 

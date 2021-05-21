@@ -49,10 +49,10 @@ class GameController {
     }
   };
 
-  public startTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  public advanceTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const tournamentId: string = req.params.id;
-      const updateTournamentData: Tournament = await this.tournamentService.startTournament(
+      const updateTournamentData: Tournament = await this.tournamentService.advanceTournament(
         tournamentId,
       );
       res.status(201).json({ data: updateTournamentData, message: 'started' });

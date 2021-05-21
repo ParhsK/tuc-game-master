@@ -39,6 +39,10 @@ const userSchema: Schema = new Schema({
     enum: Object.values(TournamentStatus),
     required: true,
   },
+  round: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const tournamentModel = model<Tournament & Document>('Tournament', userSchema);

@@ -51,7 +51,7 @@ export class TournamentsService {
     }
   }
 
-  async startTournament(tournamentId: string) {
+  async advanceTournament(tournamentId: string) {
     try {
       const res = await this.http.put<{data: any, message: string}>(
         `${this.apiURL}/game/tournaments/${tournamentId}`,
