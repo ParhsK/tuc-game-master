@@ -1,0 +1,35 @@
+<div class="info-container">
+  <span>createdBy: {{tournament.createdBy.username}}</span>
+  <span>gameName: {{tournament.gameName}}</span>
+  <span>status: {{tournament.status}}</span>
+</div>
+<div class="info-container">
+  <span>firstPlace: {{tournament.firstPlace || "-"}}</span>
+  <span>secondPlace: {{tournament.secondPlace || "-"}}</span>
+  <span>thirdPlace: {{tournament.thirdPlace || "-"}}</span>
+</div>
+
+<div class="buttons">
+  <button mat-raised-button color="primary" (click)="joinTournament()"  *ngIf="isOpen">Join tournament</button>
+  <button mat-raised-button color="primary" (click)="startTournament()" *ngIf="isOfficial && isOpen">Start tournament</button>
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="player1">
+    <th mat-header-cell *matHeaderCellDef> player1 </th>
+    <td mat-cell *matCellDef="let tournament"> {{tournament.player1}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="player2">
+    <th mat-header-cell *matHeaderCellDef> player2 </th>
+    <td mat-cell *matCellDef="let tournament"> {{tournament.player2}} </td>
+  </ng-container>
+  
+  <ng-container matColumnDef="result">
+    <th mat-header-cell *matHeaderCellDef> result </th>
+    <td mat-cell *matCellDef="let tournament"> {{tournament.result}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

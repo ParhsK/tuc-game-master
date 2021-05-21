@@ -15,14 +15,6 @@ class GameRoute implements Route {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, authMiddleware, this.gameController.getTournaments);
-    this.router.post(
-      `${this.path}`,
-      authMiddleware,
-      roleMiddleware([Role.OFFICIAL]),
-      this.gameController.createTournament,
-    );
-    this.router.post(`${this.path}/join`, authMiddleware, this.gameController.joinTournament);
     this.router.post(
       `${this.path}/findPractice`,
       authMiddleware,
@@ -33,10 +25,28 @@ class GameRoute implements Route {
       authMiddleware,
       this.gameController.getPracticeHistory,
     );
+    this.router.get(`${this.path}/tournaments`, authMiddleware, this.gameController.getTournaments);
+    this.router.post(
+      `${this.path}/tournaments`,
+      authMiddleware,
+      roleMiddleware([Role.OFFICIAL]),
+      this.gameController.createTournament,
+    );
     this.router.get(
       `${this.path}/tournaments/:id`,
       authMiddleware,
       this.gameController.getTournamentById,
+    );
+    this.router.put(
+      `${this.path}/tournaments/:id`,
+      authMiddleware,
+      roleMiddleware([Role.OFFICIAL]),
+      this.gameController.startTournament,
+    );
+    this.router.post(
+      `${this.path}/tournaments/join`,
+      authMiddleware,
+      this.gameController.joinTournament,
     );
   }
 }

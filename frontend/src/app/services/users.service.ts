@@ -13,7 +13,10 @@ export class UsersService {
 
   async getUsers() {
     try {
-      const res = await this.http.get<{data: any, message: string}>(`${this.apiURL}/users`, { withCredentials: true }).toPromise();
+      const res = await this.http.get<{data: any, message: string}>(
+        `${this.apiURL}/users`,
+        { withCredentials: true }
+      ).toPromise();
       console.log("Fetched users successfully with:", res);
       return res;
     } catch (ex) {
@@ -23,7 +26,10 @@ export class UsersService {
 
   async getUser(userId: string) {
     try {
-      const res = await this.http.get<{data: any, message: string}>(`${this.apiURL}/users/${userId}`, { withCredentials: true }).toPromise();
+      const res = await this.http.get<{data: any, message: string}>(
+        `${this.apiURL}/users/${userId}`,
+        { withCredentials: true }
+      ).toPromise();
       console.log("Fetched user successfully with:", res);
       return res;
     } catch (ex) {
@@ -33,7 +39,11 @@ export class UsersService {
 
   async changeRole(userId: string, newRole: string) {
     try {
-      const res = await this.http.put<{data: any, message: string}>(`${this.apiURL}/users/${userId}`, {role: newRole}, {withCredentials: true}).toPromise();
+      const res = await this.http.put<{data: any, message: string}>(
+        `${this.apiURL}/users/${userId}`,
+        { role: newRole },
+        { withCredentials: true }
+      ).toPromise();
       console.log("Updated user successfully with:", res);
       return res.data;
     } catch (ex) {

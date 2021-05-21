@@ -6,6 +6,8 @@ import { LoginComponent } from './login/login.component';
 import { PlayComponent } from './play/play.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { TournamentInfoComponent } from './tournament-info/tournament-info.component';
+import { TournamentsComponent } from './tournament/tournament.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UsersComponent } from './users/users.component';
 
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'user/:id', component: UserInfoComponent, canActivate: [AuthGuardService] },
   { path: 'play', component: PlayComponent, canActivate: [AuthGuardService] },
   { path: 'games', component: GameSelectorComponent, canActivate: [AuthGuardService] },
+  { path: 'tournaments', component: TournamentsComponent, canActivate: [AuthGuardService] },
+  { path: 'tournaments/:id', component: TournamentInfoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

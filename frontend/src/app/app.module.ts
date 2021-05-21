@@ -22,6 +22,8 @@ import { TictactoeComponent } from './tictactoe/tictactoe.component';
 import { ChessComponent } from './chess/chess.component';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { TournamentsComponent } from './tournament/tournament.component';
+import { TournamentInfoComponent } from './tournament-info/tournament-info.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { UserInfoComponent } from './user-info/user-info.component';
     GameSelectorComponent,
     TictactoeComponent,
     ChessComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    TournamentsComponent,
+    TournamentInfoComponent
   ],
   imports: [
     BrowserModule,

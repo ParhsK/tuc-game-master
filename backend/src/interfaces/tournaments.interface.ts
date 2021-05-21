@@ -1,4 +1,4 @@
-import { GameName } from './plays.interface';
+import { GameName, Play } from './plays.interface';
 
 export interface Tournament {
   firstPlace?: string;
@@ -9,6 +9,7 @@ export interface Tournament {
   participants: string[];
   gameName: GameName;
   status: TournamentStatus;
+  plays?: Play[];
 }
 
 export enum TournamentStatus {

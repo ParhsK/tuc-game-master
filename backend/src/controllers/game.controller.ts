@@ -49,6 +49,18 @@ class GameController {
     }
   };
 
+  public startTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const tournamentId: string = req.params.id;
+      const updateTournamentData: Tournament = await this.tournamentService.startTournament(
+        tournamentId,
+      );
+      res.status(201).json({ data: updateTournamentData, message: 'started' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public joinTournament = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const tournamentData: JoinTournamentDto = req.body;
@@ -57,7 +69,7 @@ class GameController {
         req.user,
       );
 
-      res.status(200).json({ data: joinTournamentData, message: 'updated' });
+      res.status(200).json({ data: joinTournamentData, message: 'joined' });
     } catch (error) {
       next(error);
     }

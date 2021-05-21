@@ -6,8 +6,7 @@ import { RequestWithUser } from '@/interfaces/auth.interface';
 const roleMiddleware = (roles: Role[]): RequestHandler => {
   return (req: RequestWithUser, res, next) => {
     if (!req.user) {
-      // kati phge lathos
-      console.log('NEVER COME HERE');
+      console.warn('Forgot to include authMiddleware');
     }
     if (roles.includes(req.user.role)) {
       next();
