@@ -1,7 +1,7 @@
 import config from 'config';
 import { dbConfig } from '@interfaces/db.interface';
 
-const { host, port, database }: dbConfig = config.get('dbConfig');
+const { host, port, database, connectionString }: dbConfig = config.get('dbConfig');
 
 export const dbConnection = {
   url: `mongodb://${host}:${port}/${database}`,
@@ -10,4 +10,5 @@ export const dbConnection = {
     useUnifiedTopology: true,
     useFindAndModify: false,
   },
+  uri: connectionString,
 };

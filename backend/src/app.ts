@@ -17,11 +17,13 @@ class App {
   public app: express.Application;
   public port: string | number;
   public env: string;
+  public domain: string;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.port = process.env.PORT || 3000;
     this.env = process.env.NODE_ENV || 'development';
+    this.domain = process.env.DOMAIN || 'http://127.0.0.1';
 
     this.connectToDatabase();
     this.initializeMiddlewares();
@@ -45,15 +47,16 @@ class App {
   private connectToDatabase() {
     if (this.env !== 'production') {
       set('debug', true);
+      connect(dbConnection.url, dbConnection.options);
     }
-
-    connect(dbConnection.url, dbConnection.options);
+    // Temp override for atlas
+    connect(dbConnection.uri);
   }
 
   private initializeMiddlewares() {
     if (this.env === 'production') {
       this.app.use(morgan('combined', { stream }));
-      this.app.use(cors({ origin: 'http://127.0.0.1', credentials: true }));
+      this.app.use(cors({ origin: this.domain, credentials: true }));
     } else {
       this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: 'http://127.0.0.1:4200', credentials: true }));

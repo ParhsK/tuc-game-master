@@ -3,7 +3,8 @@
     "dbConfig": {
         "host": "host.docker.internal",
         "database": "gameMaster",
-        "port": 27017
+        "port": 27017,
+        "connectionString": "mongodb+srv://paris:12345@cluster0.sqk5f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     },
     "secretKey": "secretKey"
 }
