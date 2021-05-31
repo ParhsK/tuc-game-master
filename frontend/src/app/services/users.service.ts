@@ -8,7 +8,7 @@ import { environment } from '@environments/environment';
 
 export class UsersService {
 
-  apiURL = environment.apiURL;
+  apiURL = environment.authAPI;
   constructor(private http: HttpClient) { }
 
   async getUsers() {

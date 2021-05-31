@@ -17,25 +17,25 @@ export class TournamentInfoComponent implements OnInit {
     },
     status: "",
     gameName: "",
-    firstPlace: "",
-    secondPlace: "",
-    thirdPlace: "",
-    fourthPlace: "",
+    firstPlace: { username: "" },
+    secondPlace: { username: "" },
+    thirdPlace: { username: "" },
+    fourthPlace: { username: "" },
     plays: [],
+    participants: [],
   }
-  
+
   displayedColumns: string[] = ['player1', 'player2', 'result'];
   dataSource = [];
 
   isOfficial = false;
   isOpen = false;
+  isOngoing = false;
   id = "";
 
   constructor(
-    private _usersService: UsersService,
     private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
-    private _playService: PlayService,
     private _tournamentService: TournamentsService
   ) { }
 
@@ -47,8 +47,12 @@ export class TournamentInfoComponent implements OnInit {
 
   async fetchTournament(): Promise<void> {
     const res = await this._tournamentService.getTournament(this.id);
-    this.tournament = res.data;
+    this.tournament = {
+      ...this.tournament,
+      ...res.data
+    };
     this.isOpen = res.data.status === 'OPEN';
+    this.isOngoing =  res.data.status === 'ONGOING';
     this.dataSource = this.tournament.plays;
   }
 
@@ -61,5 +65,16 @@ export class TournamentInfoComponent implements OnInit {
     const res = await this._tournamentService.advanceTournament(this.id);
     this.tournament.gameName = res.data.gameName;
   }
-}
 
+  async onJoinClick(): Promise<void> {
+    const res = await this._tournamentService.joinTournament(this.id);
+    this.tournament.participants = res?.data.participants;
+  }
+
+  getParticipantName(id: string): string {
+    if (!id) {
+      return 'NONE';
+    }
+    return this.tournament.participants.find((player) => player._id === id)?.username ?? 'NOT_FOUND' + id;
+  }
+}

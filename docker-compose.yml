@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      target: final
+    ports:
+      - "80:80"
+  auth-server:
+    container_name: auth-server
+    build:
+      context: ./backend
+      target: auth-server
+    ports:
+    - "3001:3000"
+  play-server:
+    container_name: play-server
+    build:
+      context: ./backend
+      target: play-server
+    ports:
+    - "3002:3000"
+  game-server:
+    container_name: game-server
+    build:
+      context: ./backend
+      target: game-server
+    ports:
+    - "3003:3000"

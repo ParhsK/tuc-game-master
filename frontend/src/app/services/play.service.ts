@@ -10,7 +10,8 @@ export class PlayService {
   private currentGame = new BehaviorSubject<any>(null);
   public $currentGame: Observable<any>;
 
-  apiURL = environment.apiURL;
+  playURL = environment.playAPI;
+  gameURL = environment.gameAPI;
   constructor(private http: HttpClient) {
     this.$currentGame = this.currentGame.asObservable();
   }
@@ -18,7 +19,7 @@ export class PlayService {
   async updateCurrentGame() {
     try {
       const res = await this.http.get<{ data: any, message: string }>(
-        `${this.apiURL}/play`,
+        `${this.playURL}/play`,
         { withCredentials: true }
       ).toPromise();
       console.log("Get current game:", res);
@@ -33,7 +34,7 @@ export class PlayService {
     const playData = { game };
     try {
       const res = await this.http.post<{ data: any, message: string }>(
-        `${this.apiURL}/game/findPractice`,
+        `${this.gameURL}/game/findPractice`,
         playData,
         { withCredentials: true }
       ).toPromise();
@@ -51,7 +52,7 @@ export class PlayService {
     }
     try {
       const res = await this.http.get<{ data: any, message: string }>(
-        `${this.apiURL}/play/${this.currentGame.value._id}`,
+        `${this.playURL}/play/${this.currentGame.value._id}`,
         { withCredentials: true }
       ).toPromise();
       console.log("Get play status:", res);
@@ -69,7 +70,7 @@ export class PlayService {
     const playerMove = { gameState };
     try {
       const res = await this.http.post<{ data: any, message: string }>(
-        `${this.apiURL}/play/${this.currentGame.value._id}`,
+        `${this.playURL}/play/${this.currentGame.value._id}`,
         playerMove,
         { withCredentials: true }
       ).toPromise();
@@ -84,7 +85,7 @@ export class PlayService {
   async getHistory() {
     try {
       const res = await this.http.get<{ data: any, message: string }>(
-        `${this.apiURL}/game/findAllPractices`,
+        `${this.gameURL}/game/findAllPractices`,
         { withCredentials: true }
       ).toPromise();
       return res;

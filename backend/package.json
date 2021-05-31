@@ -6,6 +6,9 @@
   "license": "ISC",
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
+    "start:auth": "npm run build && cross-env NODE_ENV=production node dist/auth.server.js",
+    "start:play": "npm run build && cross-env NODE_ENV=production node dist/play.server.js",
+    "start:game": "npm run build && cross-env NODE_ENV=production node dist/game.server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc && npx tsc-alias",
     "test": "jest --forceExit --detectOpenHandles",

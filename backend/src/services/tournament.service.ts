@@ -62,11 +62,12 @@ class TournamentService {
         };
       })
       .sort((playerA, playerB) => {
-        return playerA.wins - playerB.wins;
+        return playerB.wins - playerA.wins;
       });
+    console.log('Wins per player:' + tournamentPlayers);
 
     // Compute remaining players
-    const playerPool = tournamentPlayers.filter(player => player.wins == findTournament.round - 1);
+    const playerPool = tournamentPlayers.filter(player => player.wins == findTournament.round);
     const nextRoundPlaysCount = playerPool.length / 2;
 
     // Check if tournament is complete
@@ -93,7 +94,7 @@ class TournamentService {
     for (let i = 0; i < Math.ceil(nextRoundPlaysCount); i++) {
       // Get random player from participants
       const randomPlayer1 = playerPool.splice(Math.floor(Math.random() * playerPool.length), 1)[0];
-      if (playerPool.length === 1) {
+      if (playerPool.length === 0) {
         // Last player if count is odd
         await this.plays.create({
           player1: randomPlayer1.player,
@@ -112,6 +113,7 @@ class TournamentService {
         await this.plays.create({
           player1: randomPlayer1.player,
           player2: randomPlayer2.player,
+          lastPlayed: randomPlayer1.player,
           status: PlayStatus.ONGOING,
           state: newState,
           gameName: findTournament.gameName,
@@ -143,9 +145,12 @@ class TournamentService {
       throw new HttpException(400, 'User already registered');
     const newParticipants = findTournament.participants;
     newParticipants.push(user._id);
-    const joinTournamentData = await this.tournaments.findByIdAndUpdate(tournamentData.id, {
-      participants: newParticipants,
-    });
+    const joinTournamentData = await this.tournaments
+      .findByIdAndUpdate(tournamentData.id, {
+        participants: newParticipants,
+      })
+      .populate('participants', 'username')
+      .setOptions({ returnOriginal: false });
     return joinTournamentData;
   }
 
@@ -162,6 +167,11 @@ class TournamentService {
     const findTournament: Tournament = await this.tournaments
       .findById(tournamentId)
       .populate('createdBy', 'username')
+      .populate('participants', 'username')
+      .populate('firstPlace', 'username')
+      .populate('secondPlace', 'username')
+      .populate('thirdPlace', 'username')
+      .populate('fourthPlace', 'username')
       .lean();
     if (!findTournament) throw new HttpException(404, 'Tournament does not exist');
 

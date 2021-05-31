@@ -25,8 +25,10 @@ export class LoginComponent implements OnInit {
   }
 
   async onLoginClick(): Promise<void> {
-    await this._authService.login(this.credentials.username, this.credentials.password);
-    this._router.navigate(['/games']);
+    const res = await this._authService.login(this.credentials.username, this.credentials.password);
+    if (res._id !== "") {
+      this._router.navigate(['/games']);
+    }
   }
 
 }

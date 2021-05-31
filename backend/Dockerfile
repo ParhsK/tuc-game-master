@@ -1,24 +1,23 @@
 # Common build stage
-FROM node:14.14.0-alpine3.12 as common-build-stage
+ARG base=node:14.17.0-buster-slim
 
-COPY . ./app
-
+FROM $base AS build
 WORKDIR /app
-
-RUN npm install
-
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+ENV NODE_ENV=production
+RUN npm run build
 EXPOSE 3000
 
-# Dvelopment build stage
-FROM common-build-stage as development-build-stage
+FROM build AS auth-server
+CMD ["node", "/app/dist/auth.server.js"]
 
-ENV NODE_ENV development
+FROM build AS game-server
+CMD ["node", "/app/dist/game.server.js"]
 
-CMD ["npm", "run", "dev"]
+FROM build AS play-server
+CMD ["node", "/app/dist/play.server.js"]
 
-# Production build stage
-FROM common-build-stage as production-build-stage
-
-ENV NODE_ENV production
-
-CMD ["npm", "run", "start"]
+FROM build AS server
+CMD ["node", "/app/dist/server.js"]

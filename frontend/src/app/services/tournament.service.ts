@@ -8,7 +8,7 @@ import { environment } from '@environments/environment';
 
 export class TournamentsService {
 
-  apiURL = environment.apiURL;
+  apiURL = environment.gameAPI;
   constructor(private http: HttpClient) { }
 
   async getTournaments() {
@@ -62,6 +62,18 @@ export class TournamentsService {
       return res;
     } catch (ex) {
       console.error(ex);
+    }
+  }
+
+  async joinTournament(tournamentId: string) {
+    try {
+      const res = await this.http.post<{data: any, message: string}>(
+        `${this.apiURL}/game/tournaments/join`, { id: tournamentId }, { withCredentials: true }
+      ).toPromise();
+      console.log("Player joined tournament successfully with:", res);
+      return res;
+    } catch (ex) {
+      console.error(ex)
     }
   }
 }

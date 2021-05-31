@@ -32,6 +32,11 @@ class GameRoute implements Route {
       roleMiddleware([Role.OFFICIAL]),
       this.gameController.createTournament,
     );
+    this.router.post(
+      `${this.path}/tournaments/join`,
+      authMiddleware,
+      this.gameController.joinTournament,
+    );
     this.router.get(
       `${this.path}/tournaments/:id`,
       authMiddleware,
@@ -42,11 +47,6 @@ class GameRoute implements Route {
       authMiddleware,
       roleMiddleware([Role.OFFICIAL]),
       this.gameController.advanceTournament,
-    );
-    this.router.post(
-      `${this.path}/tournaments/join`,
-      authMiddleware,
-      this.gameController.joinTournament,
     );
   }
 }

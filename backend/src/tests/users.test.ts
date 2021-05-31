@@ -18,16 +18,19 @@ describe('Testing Users', () => {
       users.find = jest.fn().mockReturnValue([
         {
           _id: 'qpwoeiruty',
+          username: 'a',
           email: 'a@email.com',
           password: await bcrypt.hash('q1w2e3r4!', 10),
         },
         {
           _id: 'alskdjfhg',
+          username: 'b',
           email: 'b@email.com',
           password: await bcrypt.hash('a1s2d3f4!', 10),
         },
         {
           _id: 'zmxncbv',
+          username: 'c',
           email: 'c@email.com',
           password: await bcrypt.hash('z1x2c3v4!', 10),
         },
@@ -62,6 +65,7 @@ describe('Testing Users', () => {
     it('response Create User', async () => {
       const userData: CreateUserDto = {
         email: 'test@email.com',
+        username: 'test',
         password: 'q1w2e3r4',
       };
 
@@ -86,6 +90,7 @@ describe('Testing Users', () => {
       const userId = '60706478aad6c9ad19a31c84';
       const userData: CreateUserDto = {
         email: 'test@email.com',
+        username: 'test',
         password: 'q1w2e3r4',
       };
 

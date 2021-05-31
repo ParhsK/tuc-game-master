@@ -4,33 +4,39 @@
   <span>status: {{tournament.status}}</span>
 </div>
 <div class="info-container">
-  <span>firstPlace: {{tournament.firstPlace || "-"}}</span>
-  <span>secondPlace: {{tournament.secondPlace || "-"}}</span>
-  <span>thirdPlace: {{tournament.thirdPlace || "-"}}</span>
+  <span>firstPlace: {{tournament.firstPlace.username || "-"}}</span>
+  <span>secondPlace: {{tournament.secondPlace.username || "-"}}</span>
+  <span>thirdPlace: {{tournament.thirdPlace.username || "-"}}</span>
+</div>
+<div class="info-container">
+  <span>Participants:</span>
+  <div>
+    <p *ngFor="let participant of tournament.participants">{{participant.username}}</p>
+  </div>
 </div>
 
 <div class="buttons">
-  <button mat-raised-button color="primary" (click)="joinTournament()"  *ngIf="isOpen">Join tournament</button>
-  <button mat-raised-button color="primary" (click)="advanceTournament()" *ngIf="isOfficial && isOpen">
-    <span *ngIf="tournament.status === 'OPEN'">Start tournament</span>
-    <span *ngIf="tournament.status === 'ONGOING'">Advance tournament</span>
+  <button mat-raised-button color="primary" (click)="onJoinClick()" *ngIf="isOpen">Join tournament</button>
+  <button mat-raised-button color="primary" (click)="advanceTournament()" *ngIf="isOfficial && (isOpen || isOngoing)">
+    <span *ngIf="isOpen">Start tournament</span>
+    <span *ngIf="isOngoing">Advance tournament</span>
   </button>
 </div>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="player1">
     <th mat-header-cell *matHeaderCellDef> player1 </th>
-    <td mat-cell *matCellDef="let tournament"> {{tournament.player1}} </td>
+    <td mat-cell *matCellDef="let tournament"> {{getParticipantName(tournament.player1)}} </td>
   </ng-container>
 
   <ng-container matColumnDef="player2">
     <th mat-header-cell *matHeaderCellDef> player2 </th>
-    <td mat-cell *matCellDef="let tournament"> {{tournament.player2}} </td>
+    <td mat-cell *matCellDef="let tournament"> {{getParticipantName(tournament.player2)}} </td>
   </ng-container>
-  
+
   <ng-container matColumnDef="result">
     <th mat-header-cell *matHeaderCellDef> result </th>
-    <td mat-cell *matCellDef="let tournament"> {{tournament.result}} </td>
+    <td mat-cell *matCellDef="let tournament"> {{tournament.status}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

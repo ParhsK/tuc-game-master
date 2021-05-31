@@ -8,14 +8,16 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   title = 'tgm-web';
+  username = "";
 
   constructor(private _authService: AuthService) { }
 
   ngOnInit() {
     this.checkAuth();
   }
-  
+
   async checkAuth() {
     const me = (await this._authService.getMe())?.data;
+    this.username = me.username;
   }
 }

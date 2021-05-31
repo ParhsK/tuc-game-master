@@ -20,7 +20,7 @@ export class AuthService {
   }
 
 
-  apiURL = environment.apiURL;
+  apiURL = environment.authAPI;
   constructor(private http: HttpClient) { }
 
   async login(username: string, password: string) {
@@ -38,6 +38,7 @@ export class AuthService {
         role: res.data.role,
         username: res.data.username,
       });
+      return res.data;
     } catch (ex) {
       console.error(ex);
     }
@@ -58,14 +59,13 @@ export class AuthService {
     }
   }
 
-  
+
   async getMe() {
     try {
       const res = await this.http.get<{data: any, message: string}>(
         `${this.apiURL}/users/me`,
         { withCredentials: true }
       ).toPromise();
-      console.log("Fetched me successfully with:", res);
       this.user.next({
         _id: res.data._id,
         email: res.data.email,

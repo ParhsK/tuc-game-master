@@ -53,7 +53,7 @@ class App {
   private initializeMiddlewares() {
     if (this.env === 'production') {
       this.app.use(morgan('combined', { stream }));
-      this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
+      this.app.use(cors({ origin: 'http://127.0.0.1', credentials: true }));
     } else {
       this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: 'http://127.0.0.1:4200', credentials: true }));

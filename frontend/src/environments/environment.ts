@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  apiURL: "http://127.0.0.1:3000"
+  authAPI: "http://127.0.0.1:3001",
+  playAPI: "http://127.0.0.1:3002",
+  gameAPI: "http://127.0.0.1:3003",
 };
 
 /*

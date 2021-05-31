@@ -1,9 +1,11 @@
 <p>
   <mat-toolbar color="primary">
-    <button mat-icon-button aria-label="Example icon-button with menu icon">
+    <!-- <button mat-icon-button aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
-    </button>
+    </button> -->
     <span>TucGameMaster</span>
+    <span class="example-spacer"></span>
+    <span>{{ username }}</span>
     <span class="example-spacer"></span>
     <button mat-button routerLink="/users" routerLinkActive="active">
       Users
