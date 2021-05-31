@@ -4,7 +4,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ENV NODE_ENV=production
-RUN npm run build
+RUN npm run build:prod
 
 FROM nginx:1.20.1-alpine AS final
 COPY nginx.conf /etc/nginx/conf.d/default.conf
