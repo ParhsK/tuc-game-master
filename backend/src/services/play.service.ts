@@ -125,9 +125,14 @@ class PlayService {
       if (existingPlay.gameName === GameName.TIC_TAC_TOE) {
         newState = this.ticTacToeManager.initializeState();
       }
+      let randomLastPlayer = existingPlay.player1;
+      if (Math.floor(Math.random() * 2) === 0) {
+        randomLastPlayer = existingPlay.player2;
+      }
       await this.plays.create({
         player1: existingPlay.player1,
         player2: existingPlay.player2,
+        lastPlayed: randomLastPlayer,
         status: PlayStatus.ONGOING,
         state: newState,
         gameName: existingPlay.gameName,

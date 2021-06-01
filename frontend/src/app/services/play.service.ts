@@ -55,7 +55,7 @@ export class PlayService {
         `${this.playURL}/play/${this.currentGame.value._id}`,
         { withCredentials: true }
       ).toPromise();
-      console.log("Get play status:", res);
+      // console.log("Get play status:", res);
       this.currentGame.next(res.data)
       return res;
     } catch (ex) {

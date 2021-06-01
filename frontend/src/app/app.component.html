@@ -5,20 +5,33 @@
     </button> -->
     <span>TucGameMaster</span>
     <span class="example-spacer"></span>
-    <span>{{ username }}</span>
-    <span class="example-spacer"></span>
-    <button mat-button routerLink="/users" routerLinkActive="active">
-      Users
-    </button>
-    <button mat-button routerLink="/games" routerLinkActive="active">
-      Games
-    </button>
-    <button mat-button routerLink="/play" routerLinkActive="active">
-      Play
-    </button>
-    <button mat-button routerLink="/tournaments" routerLinkActive="active">
-      Tournaments
-    </button>
+    <ng-container *ngIf="username !== ''; else elseBlock">
+      <span>{{ username }}</span>
+      <span class="example-spacer"></span>
+      <button mat-button routerLink="/users" routerLinkActive="active">
+        Users
+      </button>
+      <button mat-button routerLink="/games" routerLinkActive="active">
+        Games
+      </button>
+      <button mat-button routerLink="/play" routerLinkActive="active">
+        Play
+      </button>
+      <button mat-button routerLink="/tournaments" routerLinkActive="active">
+        Tournaments
+      </button>
+      <button mat-button (click)="logout()">
+        Logout
+      </button>
+    </ng-container>
+    <ng-template #elseBlock>
+      <button mat-button routerLink="/login" routerLinkActive="active">
+        Login
+      </button>
+      <button mat-button routerLink="/register" routerLinkActive="active">
+        Register
+      </button>
+    </ng-template>
   </mat-toolbar>
 </p>
 <router-outlet></router-outlet>

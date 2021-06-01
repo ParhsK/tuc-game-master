@@ -13,7 +13,7 @@ export class AuthService {
     username: "",
     _id: "",
   });
-  public $user: Observable<any>;
+  public $user: Observable<any> = this.user.asObservable();
 
   get currentUser() {
     return this.user.value;
@@ -71,6 +71,25 @@ export class AuthService {
         email: res.data.email,
         role: res.data.role,
         username: res.data.username,
+      });
+      return res;
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  async logout() {
+    try {
+      const res = await this.http.post<{data: any, message: string}>(
+        `${this.apiURL}/logout`,
+        {},
+        { withCredentials: true }
+      ).toPromise();
+      this.user.next({
+        _id: "",
+        email: "",
+        role: "",
+        username: "",
       });
       return res;
     } catch (ex) {

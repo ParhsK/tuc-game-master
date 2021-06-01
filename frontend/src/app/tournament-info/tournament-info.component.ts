@@ -54,6 +54,9 @@ export class TournamentInfoComponent implements OnInit {
     this.isOpen = res.data.status === 'OPEN';
     this.isOngoing =  res.data.status === 'ONGOING';
     this.dataSource = this.tournament.plays;
+    if (this.isOpen || this.isOngoing) {
+      setTimeout(() => { this.fetchTournament(); }, 1000);
+    }
   }
 
   async checkPermissions(): Promise<void> {

@@ -17,10 +17,9 @@ export class TictactoeComponent implements OnInit {
     this.playService.updateCurrentGame();
     this.updateGameStatus();
   }
-  
+
   async updateGameStatus() {
     this.currentGame = (await this.playService.getPlayStatus()).data;
-    console.log(this.currentGame.state);
     if (this.currentGame.status === "PENDING") {
       this.message = "Wait for player 2";
     } else if (this.currentGame.status === "ONGOING") {
@@ -31,6 +30,10 @@ export class TictactoeComponent implements OnInit {
       this.message = "It's a draw";
     } else {
       this.message = "Game is invalid";
+    }
+    // Poll for new moves every 1 sec
+    if (this.currentGame.status === "ONGOING" || this.currentGame.status === "PENDING") {
+      setTimeout(() => { this.updateGameStatus(); }, 1000);
     }
   }
 
@@ -79,6 +82,12 @@ export class TictactoeComponent implements OnInit {
     } else {
       return "You lost, noob";
     }
+  }
+
+  async findNewGame() {
+    await this.playService.findPracticePlay('TIC_TAC_TOE');
+    await this.playService.updateCurrentGame();
+    this.updateGameStatus();
   }
 
 }

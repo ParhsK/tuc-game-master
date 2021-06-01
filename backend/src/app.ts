@@ -48,9 +48,10 @@ class App {
     if (this.env !== 'production') {
       set('debug', true);
       connect(dbConnection.url, dbConnection.options);
+    } else {
+      // Temp override for atlas
+      connect(dbConnection.uri);
     }
-    // Temp override for atlas
-    connect(dbConnection.uri);
   }
 
   private initializeMiddlewares() {

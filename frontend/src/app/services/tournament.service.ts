@@ -30,7 +30,7 @@ export class TournamentsService {
         `${this.apiURL}/game/tournaments/${tournamentId}`,
         { withCredentials: true }
       ).toPromise();
-      console.log("Fetched tournament successfully with:", res);
+      // console.log("Fetched tournament successfully with:", res);
       return res;
     } catch (ex) {
       console.error(ex);
